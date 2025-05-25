@@ -383,10 +383,13 @@ class PromptIR(nn.Module):
 
 class WrappedPromptIR(nn.Module):
     def __init__(self, model_name=None):
-        self.promptIR = PromptIR(decoder=True) 
+        super(WrappedPromptIR, self).__init__()
+        self.model = PromptIR(decoder=True) 
         self.model_name = (
             model_name or f'{datetime.now().strftime("%Y%m%d-%H%M%S")}'
         )
         
     def forward(self, *args):
-        return self.promptIR(*args)
+        return self.model(*args)
+    
+WrappedPromptIR()
