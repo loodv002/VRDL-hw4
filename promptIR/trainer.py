@@ -9,6 +9,7 @@ from tqdm import tqdm
 from typing import Tuple, Optional, Union
 
 from .model import WrappedPromptIR
+from .loss_utils import WeightedLoss
 
 class Trainer:
     def __init__(self):
@@ -71,7 +72,7 @@ class Trainer:
 
         print(f'Train model by {self.device}')
         
-        loss_function = nn.MSELoss()
+        loss_function = WeightedLoss(self.device)
 
         model = model.to(self.device)
 
