@@ -48,8 +48,8 @@ model.to(device)
 model.eval()
 
 images = {}
-output_npz_path = OUTPUT_DIR / f'{checkpoint}_ens.npz'
-output_zip_path = OUTPUT_DIR / f'{checkpoint}_ens.zip'
+output_npz_path = OUTPUT_DIR / f'{checkpoint}_ens8.npz'
+output_zip_path = OUTPUT_DIR / f'{checkpoint}_ens8.zip'
 
 model.to(device)
 model.eval()
@@ -63,6 +63,11 @@ with torch.no_grad():
             rotated_image = torch.rot90(degraded_image, direction, (2, 3))
             restored_image = model(rotated_image)
             restored_image = torch.rot90(restored_image, -direction, (2, 3))
+            restored_images.append(restored_image.squeeze(0))
+        for direction in range(4):
+            rotated_image = torch.rot90(torch.transpose(degraded_image, 2, 3), direction, (2, 3))
+            restored_image = model(rotated_image)
+            restored_image = torch.transpose(torch.rot90(restored_image, -direction, (2, 3)), 2, 3)
             restored_images.append(restored_image.squeeze(0))
 
         restored_image = torch.stack(restored_images).mean(dim=0)
