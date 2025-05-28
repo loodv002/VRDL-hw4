@@ -42,6 +42,12 @@ A `PromptIR` model for image restoration task, with training and inference code.
   ```
   The checkpoint name should be the stem of `.pth` file in `MODEL_DIR`, with format `{date}-{time}_epoch_{epoch}`. For example, `20250414-222522_epoch_4` (without .pth).
 
+  For ensemble inference, run:
+
+  ```
+  python ensemble_inference.py --checkpoint <checkpoint_name> [--config <config_file_path>]
+  ```
+
 ## Performance:
 
   PSNR: 29.10
