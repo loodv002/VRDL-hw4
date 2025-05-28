@@ -9,6 +9,7 @@ from pathlib import Path
 from promptIR import WrappedPromptIR, Trainer
 from promptIR.dataset import TrainDataset
 from promptIR.transform import train_transform, val_transform
+from promptIR.schedulers import LinearWarmupCosineAnnealingLR
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--config', default='./config.yml', help='config file path')
@@ -42,9 +43,8 @@ model = WrappedPromptIR()
 
 print(f'Model name: {model.model_name}')
 
-params = [p for p in model.parameters() if p.requires_grad]
 optimizer = torch.optim.AdamW(model.parameters(), lr=LEARNING_RATE)
-scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
+scheduler = LinearWarmupCosineAnnealingLR(optimizer=optimizer, warmup_epochs=10, max_epochs=40)
 
 trainer = Trainer()
 trainer.train(
