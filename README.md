@@ -50,6 +50,6 @@ A `PromptIR` model for image restoration task, with training and inference code.
 
 ## Performance:
 
-  PSNR: 29.95
+  PSNR: 30.03
 
   ![image](performance_screenshot.jpg)
