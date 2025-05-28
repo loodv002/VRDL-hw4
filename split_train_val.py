@@ -3,12 +3,23 @@ import yaml
 from pathlib import Path
 import shutil
 import random
+import argparse
 
 from typing import List
 
-os.chdir(Path(__file__).parent)
+parser = argparse.ArgumentParser()
+parser.add_argument('--config', default='./config.yml', help='config file path')
+args = parser.parse_args()
 
-with open('./config.yml', 'r') as f:
+config_path = args.config
+
+print(f'Config file: {config_path}')
+
+if not os.path.exists(config_path):
+    print(f'Config file "{config_path}" not exist.')
+    exit()
+
+with open(config_path, 'r') as f:
     config = yaml.safe_load(f)
 
 DATA_DIR = Path(config['path']['DATA_DIR'])
@@ -29,8 +40,6 @@ os.makedirs(splitted_train_dir / 'degraded')
 os.makedirs(splitted_val_dir)
 os.makedirs(splitted_val_dir / 'clean')
 os.makedirs(splitted_val_dir / 'degraded')
-# rain_clean-1
-# rain-1
 
 def move_dataset(splitted_data: List[Path], dest_dir: Path):
     for clean_path in splitted_data:
